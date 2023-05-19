@@ -1,6 +1,8 @@
-# Section 01
+<details>
+<summary>Section 01 : 프로젝트 환경설정</summary>
 
 >spring initializr
+
 1. Gradle-Groovy
 2. Spring Boot 2.7.11
 3. Dependencies : Spring Web, Thymeleaf
@@ -35,9 +37,11 @@
 5. 프로젝트 build폴더 내에 libs 내 빌드된 jar파일 존재확인
 6. 해당 위치에서 java -jar 프로젝트명-SNAPSHOT.jar 입력
 
+</details>
 
+<details>
+<summary>Section 02 : 스프링 웹 개발 기초</summary>
 
-# Section 02
 >정적컨텐츠
 
 <img src="./image/sec2_static.png">
@@ -111,9 +115,11 @@ static class Hello {
 	}
 }
 ```
+</details>
 
+<details>
+<summary>Section 03 : 회원관리예제 - 백엔드 개발</summary>
 
-# Section 03 회원관리예제 - 백엔드 개발
 >Step1. 비즈니스 요구사항 정리   
 -	데이터 : 회원ID, 이름
 -	기능 : 회원 등록, 조회
@@ -259,3 +265,4 @@ class MemberServiceTest{
 // 이렇게하면 실제코드에서 사용하는 Repository와 테스트에서 사용하는 Repository가 동일함.(메모리가 동일)
 // 직접 new하는게 아니라 외부에서 주입해주는 것 = DI(의존성주입)
 ```
+</details>
