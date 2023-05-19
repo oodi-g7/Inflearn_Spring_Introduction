@@ -1,13 +1,13 @@
 <details>
 <summary>Section 01 : 프로젝트 환경설정</summary>
 
->spring initializr
+# spring initializr
 
 1. Gradle-Groovy
 2. Spring Boot 2.7.11
 3. Dependencies : Spring Web, Thymeleaf
 
->spring boot library
+# spring boot library
 1. spring-boot-starter-web
 	spring-boot-starter-tomcat : 톰캣(웹서버)
 	spring-webmvc: 스프링 웹 MVC
@@ -18,18 +18,18 @@
 	spring-boot-starter-logging
 		logback(구현체), slf4j(인터페이스)
 
->test library
+# test library
 1. spring-boot-starter-test
 	junit : 테스트 프레임워크
 	mockito : 목 라이브러리
 	assertj : 테스트 코드를 좀더 편하게 작성하게끔 도와주는 라이브러리
 	spring-test : 스프링 통합 테스트 지원
 
->Doc 활용
+# Doc 활용
 1. spring.io 검색해서 project > springboot > learn 탭선택 > 사용하는버전의 reference doc선택
 2. 프로젝트 개발시 도큐먼트 내용 검색할 수 있어야 함 !
 
->window cmd창에서 프로젝트 빌드하고 실행하기
+# window cmd창에서 프로젝트 빌드하고 실행하기
 1. 우선 개발툴에서 실행중인 프로그램 모두 중지시키기
 2. cmd창 켜서 프로젝트경로로 이동
 3. gradlew.bat 입력
@@ -42,7 +42,7 @@
 <details>
 <summary>Section 02 : 스프링 웹 개발 기초</summary>
 
->정적컨텐츠
+# 정적컨텐츠
 
 <img src="./image/sec2_static.png">
 
@@ -63,7 +63,7 @@ public String hello(Model model){
 </html>
 ```
 
->MVC와 템플릿 엔진 : Thymeleaf
+# MVC와 템플릿 엔진 : Thymeleaf
 
 <img src="./image/sec2_mvc,template.png">
 
@@ -83,7 +83,7 @@ public String helloMvc(@RequestParam("name") String name, Model model){
 </html>
 ```
 
->API
+# API
 
 <img src="./image/sec2_responsebody.png">
 
@@ -120,7 +120,7 @@ static class Hello {
 <details>
 <summary>Section 03 : 회원관리예제 - 백엔드 개발</summary>
 
->Step1. 비즈니스 요구사항 정리   
+# Step1. 비즈니스 요구사항 정리   
 -	데이터 : 회원ID, 이름
 -	기능 : 회원 등록, 조회
 -	아직 데이터 저장소가 선정되지 않음(가상의 시나리오)
@@ -145,10 +145,10 @@ static class Hello {
 - 개발을 진행하기 위해서 초기 개발 단계에서는 구현체로 가벼운 메모리 기반의 데이터 저장소 사용
 
 
->Step2. 회원 도메인과 리포지토리 만들기   
-(*Repository : 회원 도메인 객체를 저장하고 불러올 수 있는 저장소 객체)
+# Step2. 회원 도메인과 리포지토리 만들기   
+- Repository : 회원 도메인 객체를 저장하고 불러올 수 있는 저장소 객체
 
->Step3. 회원 리포지토리 테스트 케이스 작성
+# Step3. 회원 리포지토리 테스트 케이스 작성
 
 **테스트 케이스 작성이유**
 
@@ -190,7 +190,7 @@ public void afterEach(){
 - 무엇을 구현하기 전 틀을 먼저 만들어두고(테스트 케이스), 해당 틀을 기반으로 개발하는 방법
 - 테스트를 먼저 만들고 구현 클래스를 만들어서 검증
 
->Step4. 회원 서비스 개발(실제 비즈니스 로직에 있는 회원 서비스)
+# Step4. 회원 서비스 개발(실제 비즈니스 로직에 있는 회원 서비스)
 
 **네이밍 규칙**
 
@@ -199,7 +199,7 @@ public void afterEach(){
 - 결론은, 해당 클래스(또는 인터페이스)의 Role에 따라 네이밍을 신중하게 정해줘야할 필요성 있음.
 - 서비스는 비즈니스에 의존적으로 설계를 하고, repository같은 경우는 기계적인, 단순한 데이터 입출력의 느낌으로 네이밍.
 
->Step5. 회원 서비스 테스트(jUnit)
+# Step5. 회원 서비스 테스트(jUnit)
 
 **테스트케이스 작성**
 
