@@ -219,3 +219,43 @@ void 회원가입() {
 - given : 무엇인가 주어졌을때
 - when : 이것을 실행했을때
 - then : 결과는 이렇게 나와야해
+
+**실제코드에서 쓰이는 객체와, 테스트시 사용하는 객체는 동일한 걸로 맞춰주기 : DI**
+
+```
+// 기존코드
+//		MemberService와 MemberServiceTest에서 사용되는 Repository는 서로 다른 객체.
+public class MemberService {
+	private final MemberRepository memberRepository = new MemoryMemberRepository();
+}
+
+class MemberServiceTest{
+	MemoryMemberRepository memberRepository = new MemoryMemberRepository();
+}
+
+
+// 수정된 코드
+//		MemberService에서 사용되는 Repository객체는 생성자를 만들어서 외부에서 전달하는 값으로 초기화시키기
+
+public class MemberService {
+	private final MemberRepository memberRepository;
+
+    public MemberService(MemberRepository memberRepository) {
+        this.memberRepository = memberRepository;
+    }
+}
+
+//		MemberServiceTest에서는 개별테스트를 실행하기 전에 beforeEach메서드를 실행할 수 있게 @BeforeEach어노테이션을 이용하고, 메서드에서는 repository객체를 생성하여 이것을 MemberService생성자로 전달.
+class MemberServiceTest{
+	MemoryMemberRepository memberRepository;
+
+    @BeforeEach
+    public void beforeEach(){
+        memberRepository = new MemoryMemberRepository();
+        memberService = new MemberService(memberRepository);
+    }
+}
+
+// 이렇게하면 실제코드에서 사용하는 Repository와 테스트에서 사용하는 Repository가 동일함.(메모리가 동일)
+// 직접 new하는게 아니라 외부에서 주입해주는 것 = DI(의존성주입)
+```
