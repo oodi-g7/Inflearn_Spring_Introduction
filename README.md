@@ -266,3 +266,86 @@ class MemberServiceTest{
 // 직접 new하는게 아니라 외부에서 주입해주는 것 = DI(의존성주입)
 ```
 </details>
+
+<details>
+<summary>Section 04 : 스프링 빈과 의존관계</summary>
+
+# 컴포넌트 스캔과 자동 의존관계 설정
+
+**스프링 빈을 등록하고 의존관계 설정하기**
+: 회원컨트롤러에 의존관계 추가
+
+- Service, Repository를 만들었으니 이제 화면을 구현할 차례.
+- 그러기 위해선 Controller와 View Template가 필요.
+- 우선, Controller생성.
+
+```
+// MemberController
+// MemberService를 이용하여 비즈니스 로직을 처리해야하므로,
+// new 키워드를 이용하여 service객체를 생성
+
+@Controller
+public class MemberController {
+	private final MemberService memberService = new MemberService();
+}
+
+---
+
+// 그런데 이러한 방식은 스프링스럽지 못함!
+// 아래와 같이 memberService를 상수로 선언해주고
+// MemberController 생성자를 만들어서 @Autowired을 걸어두면
+// 스프링 어플리케이션이 실행될때 @Controller 어노테이션을 보고 스프링 컨테이너가 MemberController를 컨테이너에 저장하면서 MemberController생성자를 호출한다.
+// 생성자를 호출하면서 memberService가 필요한 것을 보고 컨테이너에 있는 MemberRepository객체를 주입시킨다.
+
+@Controller
+public class MemberController {
+    private final MemberService memberService;
+
+    @Autowired
+    public MemberController(MemberService memberService){
+        this.memberService = memberService;
+    }
+}
+```
+
+- 생성자에 @Autowired 가 있으면 스프링이 연관된 객체를 **스프링 컨테이너**에서 찾아서 넣어준다. 이렇게 객체 의존 관계를 외부에서 넣어주는 것을 DI(Dependency Injection), 의존성 주입이라 한다.
+- 이전 테스트에서는 개발자가 직접 주입했고, 여기서는 @Autowired에 의해 스프링이 주입해준다. 
+
+```
+// Service클래스에 가서도 동일하게 진행해주기
+@Service
+public class MemberService {
+    private final MemberRepository memberRepository;
+
+    @Autowired
+    public MemberService(MemberRepository memberRepository) {
+        this.memberRepository = memberRepository;
+    }
+}
+```
+- Controller, Service, Repository를 모두 @Controllrer, @Service, @Repository 어노테이션을 붙여서 SpringContainer에 등록해주고,
+- 그 사이를 @Autowired를 통해 이어주면 아래와 같은 관계가 완성된다.
+
+<img src="./image/sec4_1.png"> 
+
+**컴포넌트 스캔**
+- @Controller, @Service, @Repository 모두 @Componant어노테이션에 속함!
+- 스프링이 실행될때, Component객체는 전부 SpringContainer에 등록됨.
+- 그리고 @Autowired는 연관관계, SpringContainer에 등록된 객체끼리의 연관관계를 설정해줌.
+
+- 정리하자면,
+- @Component 어노테이션이 있으면 Spring Bean으로 자동등록된다. = Component Scan
+- @Controller 컨트롤러가 스프링 빈으로 자동등록된 이유도 Component Scan 때문이다.
+- @Component를 포함하는 다음 어노테이션도 Spring Bean으로 자동 등록된다.
+
+>> : @Controller, @Service, @Repository
+
+**참고**
+- main 클래스가 속해있는 패키지의 하위에서만 자동 컴포넌트스캔이 이뤄지며, main클래스와 동일한 위치거나 그 외의 위치는 별도의 설정을 통해 컴포넌트스캔을 실행할 수 있다.
+- 스프링은 스프링 컨테이너에 스프링 빈을 등록할때, 기본으로 싱글톤으로 등록한다.(유일하게 하나만 등록해서 공유한다.) 따라서 같은 스프링빈이면 모두 같은 인스턴스이다. 설정으로 싱글톤이 아니게 설정할 수 있지만, 특별한 경우를 제외하면 대부분 싱글톤을 사용한다. → 메모리 절약 가능
+
+# 자바 코드로 직접 스프링 빈 등록하기
+
+
+
+</details>
