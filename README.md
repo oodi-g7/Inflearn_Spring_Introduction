@@ -230,7 +230,7 @@ void 회원가입() {
 
 ```
 // 기존코드
-//		MemberService와 MemberServiceTest에서 사용되는 Repository는 서로 다른 객체.
+//	MemberService와 MemberServiceTest에서 사용되는 Repository는 서로 다른 객체.
 public class MemberService {
 	private final MemberRepository memberRepository = new MemoryMemberRepository();
 }
@@ -241,7 +241,7 @@ class MemberServiceTest{
 
 
 // 수정된 코드
-//		MemberService에서 사용되는 Repository객체는 생성자를 만들어서 외부에서 전달하는 값으로 초기화시키기
+//	MemberService에서 사용되는 Repository객체는 생성자를 만들어서 외부에서 전달하는 값으로 초기화시키기
 
 public class MemberService {
 	private final MemberRepository memberRepository;
@@ -251,7 +251,7 @@ public class MemberService {
     }
 }
 
-//		MemberServiceTest에서는 개별테스트를 실행하기 전에 beforeEach메서드를 실행할 수 있게 @BeforeEach어노테이션을 이용하고, 메서드에서는 repository객체를 생성하여 이것을 MemberService생성자로 전달.
+//	MemberServiceTest에서는 개별테스트를 실행하기 전에 beforeEach메서드를 실행할 수 있게 @BeforeEach어노테이션을 이용하고, 메서드에서는 repository객체를 생성하여 이것을 MemberService생성자로 전달.
 class MemberServiceTest{
 	MemoryMemberRepository memberRepository;
 
