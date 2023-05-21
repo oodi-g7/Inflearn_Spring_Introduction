@@ -338,7 +338,7 @@ public class MemberService {
 - @Controller 컨트롤러가 스프링 빈으로 자동등록된 이유도 Component Scan 때문이다.
 - @Component를 포함하는 다음 어노테이션도 Spring Bean으로 자동 등록된다.
 
->> : @Controller, @Service, @Repository
+> : @Controller, @Service, @Repository
 
 **참고**
 - main 클래스가 속해있는 패키지의 하위에서만 자동 컴포넌트스캔이 이뤄지며, main클래스와 동일한 위치거나 그 외의 위치는 별도의 설정을 통해 컴포넌트스캔을 실행할 수 있다.
@@ -346,6 +346,94 @@ public class MemberService {
 
 # 자바 코드로 직접 스프링 빈 등록하기
 
+- 회원 서비스와 회원 리포지토리의 @Service, @Repository, @Autowired 어노테이션을 제거하고 진행
+- main클래스가 있는 위치에 SpringConfig 클래스를 생성
+- SpringConfig 클래스에다 memberService와 memberRepository를 아래와같이 @Bean어노테이션을 이용하여 스프링 컨테이너에 등록해줌.
+
+```
+package hello.hellospring;
+
+import hello.hellospring.repository.MemberRepository;
+import hello.hellospring.repository.MemoryMemberRepository;
+import hello.hellospring.service.MemberService;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+
+@Configuration
+public class SpringConfig {
+
+    @Bean
+    public MemberService memberService(){
+        return new MemberService(memberRepository());
+    }
+
+    @Bean
+    public MemberRepository memberRepository(){
+        return new MemoryMemberRepository();
+    }
+}
+```
+
+- 이렇게 설정해주면 아래와같은 관계가 만들어진다.
+
+<img src="./image/sec4_2.png">
+
+- 컴포넌트 스캔을 이용한 자동의존관계 설정시에는 @Controller, @Service, @Repository 어노테이션으로 컴포넌트들을 SpringBean으로 등록하고, @Autowired를 통해 의존관계를 자동으로 설정해주었다면,
+- 이 방식은 Service와 Repository를 SpringConfig라는 @Configuration 클래스에 @Bean을 이용해 직접 SpringContainer에다 등록하고, new MemberService(memberRepository()) 처럼 직접 의존관계를 설정해준다.
+
+**컴포넌트스캔과 자동의존관계 vs 자바코드로 직접**
+- 실무에서는 주로 정형화된 컨트롤러, 서비스, 리포지토리 같은 코드는 컴포넌트 스캔을 이용한다.
+- <U>정형화되지 않거나, 상황에 따라 구현 클래스를 변경해야 하면</U> 자바 코드로 직접 설정을 통해 스프링 빈으로 등록한다.    
+	→ (ex)만약 인터페이스 구현체를 변경해야한다면, 컴포넌트스캔시 해당 클래스들을 방문하여 관련 어노테이션을 다 삭제해줘야하는 반면, config파일로 관리할때에는 config파일 하나면 수정하면 되므로, 수정이 훨씬 용이함.
+
+> 우리는 향후 메모리 리포지토리를 다른 리포지토리로 변경할 예정이므로, 컴포넌트 스캔 방식 대신에 자바 코드로 스프링 빈을 설정하겠다.
+
+**참고**
+- DI에는 필드주입, setter주입, 생성자 주입 이렇게 3가지 방법이 있다. 객체간 의존관계는 런타임시에 동적으로 변하는 경우가 없으므로 생성자 주입을 권장한다.
+
+	```
+	1. 생성자주입
+	@Controller
+	public class MemberController{
+		
+		private final MemberService memberService;
+
+		@Autowired
+		public MemberController(MemberService memberService){
+			this.memberService = memberService;
+		}
+
+	}
+	: SpringContainer에서 주입시켜준 memberService를 final 상수에다 저장하고 해당 컨트롤러 클래스 내에서 사용하기때문에 값이 중간에 변경될 위험이 적고 안전하게 사용가능
+
+
+	2. 필드주입
+	@Controller
+	public class MemberController{
+
+		@Autowired
+		private MemberService memberService;
+	} 
+	: 필드주입은 프로젝트가 실행되는 그 시점에만 memberService를 주입해주고, 그 뒤로 해당 값을 변경해줄 수 있는 방법이 없음. 중간에 값을 변경해줘야할 경우가 있다고 가정했을때 필드주입은 그에 대한 방법이 없으므로 비추천!
+
+
+	3. setter주입
+	@Controller
+	public class MemberController{
+
+		private MemberService memberService;
+
+		@Autowired
+		public void setMemberService(MemberService memberService){
+			this.memberService = memberService;
+		}
+	}
+	: setter주입은 어느 코드에서건 memberService.setMemberService() 와 같이 memberService 값을 설정해줄 수 있는 set메소드 호출이 가능하므로, 중간에 값이 바뀔 위험이 큼. 호출하지 않아도 되는 메서드는 호출 되지않는게 가장 좋음.
+
+	4. 결론
+	: 따라서 DI방식 중에선 생성자주입방식이 가장 좋다 !
+	```
+- [주의] @Autowired를 통한 DI는 스프링이 관리하는 객체(SpringContainer에 등록된)에서만 동작한다. 스프링 빈으로 등록하지 않고 내가 직접 생성한 객체에서는 동작하지 않는다.
 
 
 </details>

@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 
-@Service
 public class MemberService {
     // MemberService도 memberRepository가 필요하므로, 해당 객체를 new해서 새로 생성하여 사용하는 것 보단
     // MemberService 생성자를 만들어서 @Autowired 어노테이션을 걸어두면,
@@ -16,7 +15,6 @@ public class MemberService {
     // 생성자를 호출하면서 memberRepository가 필요한 것을 보고 컨테이너에 있는 MemberRepository객체를 주입시켜준다.
     private final MemberRepository memberRepository;
 
-    @Autowired
     public MemberService(MemberRepository memberRepository) {
         this.memberRepository = memberRepository;
     }

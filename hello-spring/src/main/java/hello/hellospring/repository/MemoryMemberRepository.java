@@ -5,7 +5,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.*;
 
-@Repository
+
 public class MemoryMemberRepository implements MemberRepository {
 
     // 현재 저장소가 없다는 설정이므로, 등록된 멤버를 저장해둘 변수가 필요함.
