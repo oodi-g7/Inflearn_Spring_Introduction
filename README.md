@@ -42,7 +42,7 @@
 <details>
 <summary>Section 02 : 스프링 웹 개발 기초</summary>
 
-# 정적컨텐츠
+# 2-1. 정적컨텐츠
 
 <img src="./image/sec2_static.png">
 
@@ -63,7 +63,7 @@ public String hello(Model model){
 </html>
 ```
 
-# MVC와 템플릿 엔진 : Thymeleaf
+# 2-2. MVC와 템플릿 엔진 : Thymeleaf
 
 <img src="./image/sec2_mvc,template.png">
 
@@ -83,7 +83,7 @@ public String helloMvc(@RequestParam("name") String name, Model model){
 </html>
 ```
 
-# API
+# 2-3. API
 
 <img src="./image/sec2_responsebody.png">
 
