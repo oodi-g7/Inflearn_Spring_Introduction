@@ -451,3 +451,20 @@ public class SpringConfig {
 - 해당 컨트롤러가 존재하지 않으면 static파일 하위에 요청하는 자원과 동일한 이름의 html파일을 웹 브라우저로 전송하여 응답한다.
 
 </details>
+
+<details>
+<summary>Section 06 : 스프링 DB 접근 기술</summary>
+
+# H2 데이터베이스 설치
+
+1. /h2/bin/h2.bat 실행
+2. 실행
+
+<img src="./image/sec6_1.png">
+
+3. JDBC URL에 jdbc:h2:~/test 확인 → 연결
+4. 홈디렉토리에 test.mv.db 있는지 확인
+5. 이후 접속할때는 JDBC URL에 jdbc:h2:tcp://localhost/~/test 입력하여 연결하기 → 파일위치로 데이터 접속시 이래저래 꼬일 염려 있음
+6. 추후 문제 생겼을때, 홈디렉토리에 있는 test.mv.db 파일 삭제    
+→ h2 db 서버 완전히 내려서 끈 후 → 다시 h2.bat 실행 → 3번부터 차례대로 다시 실행
+</details>
