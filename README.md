@@ -470,21 +470,22 @@ public class SpringConfig {
 
 # 순수 JDBC
 
+**환경설정**
+- build.gradle 파일에 jdbc, h2 데이터베이스 관련 라이브러리 추가
+> implementation 'org.springframework.boot:spring-boot-starter-jdbc'   
+runtimeOnly 'com.h2database:h2'
+
+- 스프링부트 데이터베이스 연결설정 추가 : resources/application.properties
+> spring.datasource.url=jdbc:h2:tcp://localhost/~/test   
+spring.datasource.driver-class-name=org.h2.Driver   
+spring.datasource.username=sa
+
+**코드작성**
+
 <details>
-<summary> JdbcMemberRepository 코드</summary>
+<summary>ㅤ[JdbcMemberRepository 코드]</summary>
 
 ```
-package hello.hellospring.repository;
-
-import hello.hellospring.domain.Member;
-import org.springframework.jdbc.datasource.DataSourceUtils;
-
-import javax.sql.DataSource;
-import java.sql.*;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-
 public class JdbcMemberRepository implements MemberRepository {
 
     private final DataSource dataSource;
@@ -750,7 +751,8 @@ public class SpringConfig {
 - @Transactional 
 : 테스트 케이스에 해당 어노테이션이 있으면 테스트 시작 전에 트랜잭션을 시작하고, 테스트 완료 후에 항상 롤백한다. 이렇게 하면 DB에 데이터가 남지 않으므로 다음 테스트에 영향을 주지 않는다. → 즉, 다음 테스트를 반복적으로 실행할 수 있음.
 : 해당 어노테이션이 Service 등에 붙으면 rollback하지 않고 정상적으로 실행되고, 테스트케이스에 붙었을때만 rollback을 통해 DB에 데이터를 남기지 않음
-- 보통은 테스트 전용 DB를 따로 구축함
+
+> 현업에선 보통 테스트 전용 DB를 따로 구축함
 
 **<U>단위테스트</U> vs 통합테스트**
 - 순수하게 자바코드로 최소한의 기능을 테스트해보는 것을 단위테스트, 스프링을 실행하고 DB까지 연결해서 서비스 전체를 통합적으로 테스트해보는 것을 통합테스트라고 한다.
