@@ -667,4 +667,93 @@ public class SpringConfig {
 - 스프링의 DI(Dependencies Injection)을 사용하면 기존 코드를 전혀 손대지 않고, 설정만으로 구현클래스를 변경할 수 있다.
 - 이제 데이터를 DB에 저장하므로 스프링 서버를 껐다가 다시 실행해도 데이터가 안전하게 저장된다.
 
+# 스프링 통합 테스트
+
+**통합 테스트코드 작성**
+- 이전 테스트코드는 스프링과 전혀 관계없는 순수한 자바 코드를 테스트한 것. 그게 가능했던 이유는 데이터를 메모리에 저장하기때문에 Connection객체를 만들필요가 없었기 때문.
+- 하지만 지금은 상황이 다름. 실제 DB에 연결하여 데이터를 정상적으로 주고받는지를 테스트해야하므로, 스프링 자체를 껐다 켰다 하면서 테스트할 수 밖에 없음.
+- 테스트 코드는 기존 MemberServiceTest클래스를 복붙해서 몇가지만 수정하여 작성.
+
+	```
+	@SpringBootTest
+	@Transactional
+	class MemberServiceIntegrationTest {
+	// 이전에는 Service, Repository객체를 직접 생성해서 넣었으니 해당 메소드가 필요했는데,
+	// 이제는 스프링 컨테이너한테 service, repository 내놔! 하면 되니까 없애기.
+	//    MemberService memberService;
+	//    MemoryMemberRepository memberRepository;
+	//
+	//    @BeforeEach
+	//    public void beforeEach(){
+	//        memberRepository = new MemoryMemberRepository();
+	//        memberService = new MemberService(memberRepository);
+	//    }
+
+		// 위의 코드를 이렇게 변경.
+		// 의존성 주입방법 중 생성자방식을 가장 권유하지만,
+		// 이건 테스트코드이므로 필드주입방식이든 뭐든 편한대로 쓰면 됨
+		@Autowired MemberService memberService;
+		@Autowired MemberRepository memberRepository;
+
+	// 이것도 @Transactional 어노테이션 덕분에 필요없어짐
+	//    @AfterEach
+	//    public void afterEach(){
+	//        memberRepository.clearStore();
+	//    }
+
+		@Test
+		void join() {
+			//given
+			Member member = new Member();
+			member.setName("spring");
+
+			//when
+			Long saveId = memberService.join(member);
+
+			//then
+			Member findMember = memberService.findOne(saveId).get();
+			assertThat(member.getName()).isEqualTo(findMember.getName());
+		}
+
+		@Test
+		public void 중복_회원_예외(){
+			//given
+			Member member1 = new Member();
+			member1.setName("spring");
+
+			Member member2 = new Member();
+			member2.setName("spring");
+
+			//when
+			memberService.join(member1);
+			//      member2를 넣으면 IllegalState예외가 터져야한다.
+			//      예외가 터지면 테스트가 성공이라고 출력됨
+			IllegalStateException e = assertThrows(IllegalStateException.class, () -> memberService.join(member1));
+			assertThat(e.getMessage()).isEqualTo("이미 존재하는 회원입니다.");
+
+			/*
+			try{
+				// 예외가 발생해야함
+				memberService.join(member2);
+				fail();
+			}catch(IllegalStateException e){
+				assertThat(e.getMessage()) .isEqualTo("이미 존재하는 회원입니다.");
+			}
+			*/
+
+			//then
+		}
+	}
+	```
+
+- @SpringBootTest : 스프링 프로젝트를 실행해서 테스트를 진행해야하므로, 해당 어노테이션 필수! 스프링 컨테이너와 테스트를 함께 실행한다.
+- @Transactional 
+: 테스트 케이스에 해당 어노테이션이 있으면 테스트 시작 전에 트랜잭션을 시작하고, 테스트 완료 후에 항상 롤백한다. 이렇게 하면 DB에 데이터가 남지 않으므로 다음 테스트에 영향을 주지 않는다. → 즉, 다음 테스트를 반복적으로 실행할 수 있음.
+: 해당 어노테이션이 Service 등에 붙으면 rollback하지 않고 정상적으로 실행되고, 테스트케이스에 붙었을때만 rollback을 통해 DB에 데이터를 남기지 않음
+- 보통은 테스트 전용 DB를 따로 구축함
+
+**<U>단위테스트</U> vs 통합테스트**
+- 순수하게 자바코드로 최소한의 기능을 테스트해보는 것을 단위테스트, 스프링을 실행하고 DB까지 연결해서 서비스 전체를 통합적으로 테스트해보는 것을 통합테스트라고 한다.
+- 단위테스트를 잘하는 것이 더 중요. 스프링 컨테이너없이 개별 단위들을 테스트할 수 있는 코드를 짜는 것이 중요하다. 물론 통합테스트가 필요한 경우도 있지만, 되도록 스프링 컨테이너를 동원한 테스트코드 작성은 지양하는 것이 좋음. 
+
 </details>
