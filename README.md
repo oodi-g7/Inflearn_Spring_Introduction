@@ -1,3 +1,5 @@
+# 📌 학습내용정리
+
 <details>
 <summary>Section 01 : 프로젝트 환경설정</summary>
 
@@ -951,4 +953,5 @@ public class JdbcTemplateMemberRepository implements MemberRepository{
 		};
 	}
 	```
+> (4) jdbcTemplate은 순수jdbc와 동일한 환경설정, JDBC API에서 본 반복코드를 대부분 제거해준다. 단, SQL은 직접 작성해야한다.
 </details>
