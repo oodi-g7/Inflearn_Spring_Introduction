@@ -956,4 +956,6 @@ public class JdbcTemplateMemberRepository implements MemberRepository{
 > (4) jdbcTemplate은 순수jdbc와 동일한 환경설정으로 사용이 가능하다.
 
 > (5) jdbcTemplate은 JDBC API에서 본 반복코드를 대부분 제거해준다. 단, SQL은 직접 작성해야한다.
+
+# 6-5. JPA
 </details>

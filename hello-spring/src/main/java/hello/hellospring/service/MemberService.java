@@ -4,10 +4,12 @@ import hello.hellospring.domain.Member;
 import hello.hellospring.repository.MemberRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
 
+@Transactional
 public class MemberService {
     // MemberService도 memberRepository가 필요하므로, 해당 객체를 new해서 새로 생성하여 사용하는 것 보단
     // MemberService 생성자를 만들어서 @Autowired 어노테이션을 걸어두면,
