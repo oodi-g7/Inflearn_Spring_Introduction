@@ -1,13 +1,13 @@
 <details>
 <summary>Section 01 : 프로젝트 환경설정</summary>
 
-# spring initializr
+# 1-1.spring initializr
 
 1. Gradle-Groovy
 2. Spring Boot 2.7.11
 3. Dependencies : Spring Web, Thymeleaf
 
-# spring boot library
+# 1-2.spring boot library
 1. spring-boot-starter-web
 	spring-boot-starter-tomcat : 톰캣(웹서버)
 	spring-webmvc: 스프링 웹 MVC
@@ -18,18 +18,18 @@
 	spring-boot-starter-logging
 		logback(구현체), slf4j(인터페이스)
 
-# test library
+# 1-3.test library
 1. spring-boot-starter-test
 	junit : 테스트 프레임워크
 	mockito : 목 라이브러리
 	assertj : 테스트 코드를 좀더 편하게 작성하게끔 도와주는 라이브러리
 	spring-test : 스프링 통합 테스트 지원
 
-# Doc 활용
+# 1-4.Doc 활용
 1. spring.io 검색해서 project > springboot > learn 탭선택 > 사용하는버전의 reference doc선택
 2. 프로젝트 개발시 도큐먼트 내용 검색할 수 있어야 함 !
 
-# window cmd창에서 프로젝트 빌드하고 실행하기
+# 1-5.window cmd창에서 프로젝트 빌드하고 실행하기
 1. 우선 개발툴에서 실행중인 프로그램 모두 중지시키기
 2. cmd창 켜서 프로젝트경로로 이동
 3. gradlew.bat 입력
@@ -38,6 +38,10 @@
 6. 해당 위치에서 java -jar 프로젝트명-SNAPSHOT.jar 입력
 
 </details>
+
+
+
+
 
 <details>
 <summary>Section 02 : 스프링 웹 개발 기초</summary>
@@ -117,10 +121,14 @@ static class Hello {
 ```
 </details>
 
+
+
+
+
 <details>
 <summary>Section 03 : 회원관리예제 - 백엔드 개발</summary>
 
-# Step1. 비즈니스 요구사항 정리   
+# 3-1. [Step1]비즈니스 요구사항 정리   
 -	데이터 : 회원ID, 이름
 -	기능 : 회원 등록, 조회
 -	아직 데이터 저장소가 선정되지 않음(가상의 시나리오)
@@ -145,10 +153,10 @@ static class Hello {
 - 개발을 진행하기 위해서 초기 개발 단계에서는 구현체로 가벼운 메모리 기반의 데이터 저장소 사용
 
 
-# Step2. 회원 도메인과 리포지토리 만들기   
+# 3-2. [Step2]회원 도메인과 리포지토리 만들기   
 - Repository : 회원 도메인 객체를 저장하고 불러올 수 있는 저장소 객체
 
-# Step3. 회원 리포지토리 테스트 케이스 작성
+# 3-3. [Step3]회원 리포지토리 테스트 케이스 작성
 
 **테스트 케이스 작성이유**
 
@@ -190,7 +198,7 @@ public void afterEach(){
 - 무엇을 구현하기 전 틀을 먼저 만들어두고(테스트 케이스), 해당 틀을 기반으로 개발하는 방법
 - 테스트를 먼저 만들고 구현 클래스를 만들어서 검증
 
-# Step4. 회원 서비스 개발(실제 비즈니스 로직에 있는 회원 서비스)
+# 3-4. [Step4]회원 서비스 개발(실제 비즈니스 로직에 있는 회원 서비스)
 
 **네이밍 규칙**
 
@@ -199,7 +207,7 @@ public void afterEach(){
 - 결론은, 해당 클래스(또는 인터페이스)의 Role에 따라 네이밍을 신중하게 정해줘야할 필요성 있음.
 - 서비스는 비즈니스에 의존적으로 설계를 하고, repository같은 경우는 기계적인, 단순한 데이터 입출력의 느낌으로 네이밍.
 
-# Step5. 회원 서비스 테스트(jUnit)
+# 3-5. [Step5]회원 서비스 테스트(jUnit)
 
 **테스트케이스 작성**
 
@@ -266,6 +274,10 @@ class MemberServiceTest{
 // 직접 new하는게 아니라 외부에서 주입해주는 것 = DI(의존성주입)
 ```
 </details>
+
+
+
+
 
 <details>
 <summary>Section 04 : 스프링 빈과 의존관계</summary>
@@ -438,6 +450,10 @@ public class SpringConfig {
 
 </details>
 
+
+
+
+
 <details>
 <summary>Section 05 : 회원관리예제-웹MVC개발</summary>
 
@@ -452,10 +468,14 @@ public class SpringConfig {
 
 </details>
 
+
+
+
+
 <details>
 <summary>Section 06 : 스프링 DB 접근 기술</summary>
 
-# H2 데이터베이스 설치
+# 6-1. H2 데이터베이스 설치
 
 1. /h2/bin/h2.bat 실행
 2. 실행
@@ -468,7 +488,7 @@ public class SpringConfig {
 6. 추후 문제 생겼을때, 홈디렉토리에 있는 test.mv.db 파일 삭제    
 → h2 db 서버 완전히 내려서 끈 후 → 다시 h2.bat 실행 → 3번부터 차례대로 다시 실행
 
-# 순수 JDBC
+# 6-2. 순수 JDBC
 
 **환경설정**
 - build.gradle 파일에 jdbc, h2 데이터베이스 관련 라이브러리 추가
@@ -668,7 +688,7 @@ public class SpringConfig {
 - 스프링의 DI(Dependencies Injection)을 사용하면 기존 코드를 전혀 손대지 않고, 설정만으로 구현클래스를 변경할 수 있다.
 - 이제 데이터를 DB에 저장하므로 스프링 서버를 껐다가 다시 실행해도 데이터가 안전하게 저장된다.
 
-# 스프링 통합 테스트
+# 6-3. 스프링 통합 테스트
 
 **통합 테스트코드 작성**
 - 이전 테스트코드는 스프링과 전혀 관계없는 순수한 자바 코드를 테스트한 것. 그게 가능했던 이유는 데이터를 메모리에 저장하기때문에 Connection객체를 만들필요가 없었기 때문.
@@ -757,7 +777,7 @@ public class SpringConfig {
 **<U>단위테스트</U> vs 통합테스트**
 - 순수하게 자바코드로 최소한의 기능을 테스트해보는 것을 단위테스트, 스프링을 실행하고 DB까지 연결해서 서비스 전체를 통합적으로 테스트해보는 것을 통합테스트라고 한다.
 - 단위테스트를 잘하는 것이 더 중요. 스프링 컨테이너없이 개별 단위들을 테스트할 수 있는 코드를 짜는 것이 중요하다. 물론 통합테스트가 필요한 경우도 있지만, 되도록 스프링 컨테이너를 동원한 테스트코드 작성은 지양하는 것이 좋음. 
-# 스프링 JdbcTemplate
+# 6-4. 스프링 JdbcTemplate
 
 **JdbcTemplate**
 - 개발자가 JDBC기술을 쉽게 사용할 수 있도록 도와주는 서비스
@@ -916,19 +936,19 @@ public class JdbcTemplateMemberRepository implements MemberRepository{
 - 내가 이해한 내용
 	```
 	private RowMapper<Member> memberRowMapper(){
-			return new RowMapper<Member>(){ // 익명클래스(내부클래스의 일종), return값은 RowMapper<Member>이다.
-				// new 인터페이스명() <- 이것만 보면 RowMapper 인터페이스를 클래스 생성자처럼 초기화해서 인스턴스화 한 것 같지만,
-				// 인터페이스는 객체를 만들 수 없으므로 이건 자식 클래스를 생성해서 implements하고 클래스를 초기화한 것과 동일.
-				// 익명클래스를 작성함과 동시에 객체를 생성하도록 하는 Java의 문법으로 보면 됨.
-				@Override // RowMapper클래스에 있는 mapRow를 재정의
-				public Member mapRow(ResultSet rs, int rowNum) throws SQLException{
-					Member member = new Member();
-					member.setId(rs.getLong("id"));
-					member.setName(rs.getString("name"));
+		return new RowMapper<Member>(){ // 익명클래스(내부클래스의 일종), return값은 RowMapper<Member>이다.
+			// new 인터페이스명() <- 이것만 보면 RowMapper 인터페이스를 클래스 생성자처럼 초기화해서 인스턴스화 한 것 같지만,
+			// 인터페이스는 객체를 만들 수 없으므로 이건 자식 클래스를 생성해서 implements하고 클래스를 초기화한 것과 동일.
+			// 익명클래스를 작성함과 동시에 객체를 생성하도록 하는 Java의 문법으로 보면 됨.
+			@Override // RowMapper클래스에 있는 mapRow를 재정의
+			public Member mapRow(ResultSet rs, int rowNum) throws SQLException{
+				Member member = new Member();
+				member.setId(rs.getLong("id"));
+				member.setName(rs.getString("name"));
 
-					return member;
-				}
-			};
-		}
+				return member;
+			}
+		};
+	}
 	```
 </details>
