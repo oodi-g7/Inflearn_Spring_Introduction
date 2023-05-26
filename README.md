@@ -1,13 +1,13 @@
 <details>
 <summary>Section 01 : 프로젝트 환경설정</summary>
 
-# 1-1.spring initializr
+# 1-1. spring initializr
 
 1. Gradle-Groovy
 2. Spring Boot 2.7.11
 3. Dependencies : Spring Web, Thymeleaf
 
-# 1-2.spring boot library
+# 1-2. spring boot library
 1. spring-boot-starter-web
 	spring-boot-starter-tomcat : 톰캣(웹서버)
 	spring-webmvc: 스프링 웹 MVC
@@ -18,18 +18,18 @@
 	spring-boot-starter-logging
 		logback(구현체), slf4j(인터페이스)
 
-# 1-3.test library
+# 1-3. test library
 1. spring-boot-starter-test
 	junit : 테스트 프레임워크
 	mockito : 목 라이브러리
 	assertj : 테스트 코드를 좀더 편하게 작성하게끔 도와주는 라이브러리
 	spring-test : 스프링 통합 테스트 지원
 
-# 1-4.Doc 활용
+# 1-4. Doc 활용
 1. spring.io 검색해서 project > springboot > learn 탭선택 > 사용하는버전의 reference doc선택
 2. 프로젝트 개발시 도큐먼트 내용 검색할 수 있어야 함 !
 
-# 1-5.window cmd창에서 프로젝트 빌드하고 실행하기
+# 1-5. window cmd창에서 프로젝트 빌드하고 실행하기
 1. 우선 개발툴에서 실행중인 프로그램 모두 중지시키기
 2. cmd창 켜서 프로젝트경로로 이동
 3. gradlew.bat 입력
