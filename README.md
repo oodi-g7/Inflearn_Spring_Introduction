@@ -136,7 +136,7 @@ static class Hello {
 -	아직 데이터 저장소가 선정되지 않음(가상의 시나리오)
 -	동일한 이름의 회원은 등록할 수 없다.
 
-**일반적인 웹 애플리케이션 계층 구조**
+**<일반적인 웹 애플리케이션 계층 구조>**
 
 <img src="./image/sec3_1.png">
 
@@ -145,7 +145,7 @@ static class Hello {
 - 리포지토리 : 데이터베이스에 접근, 도메인 객체를 DB에 저장하고 관리
 - 도메인 : 비즈니스 도메인 객체 (예)회원, 주문, 쿠폰 등등 주로 DB에 저장하고 관리됨
 
-**클래스 의존관계**
+**<클래스 의존관계>**
 
 <img src="./image/sec3_2.png">
 
@@ -160,12 +160,12 @@ static class Hello {
 
 # 3-3. [Step3]회원 리포지토리 테스트 케이스 작성
 
-**테스트 케이스 작성이유**
+**<테스트 케이스 작성이유>**
 
 - 개발한 기능을 실행해서 테스트 할때, 자바의 main메스드를 통해 실행하거나 웹 애플리케이션의 컨트롤러를 통해서 해당 기능을 실행한다. 이러한 방법은 준비하고 실행하는데 오래걸리고, 반복 실행하기 어려우며, 여러 테스트를 한번에 실행하기 어렵다는 단점이 있다.
 - 자바는 JUnit이라는 프레임워크로 테스트를 실행해서 이러한 문제를 해결한다.
 
-**테스트 케이스 작성시 주의사항**
+**<테스트 케이스 작성시 주의사항>**
 
 <img src="./image/sec3_3.png">
 
@@ -195,14 +195,14 @@ public void afterEach(){
 - 테스트는 서로 의존관계 없이 (순서에 상관없이) 설계되어야 한다.
 - 그러기위해선 하나의 테스트가 끝날때마다 공용저장소, 공용데이터들을 깔끔히 제거해줘야 한다.
 
-**TDD, 테스트 주도 개발**
+**<TDD, 테스트 주도 개발>**
 - 테스트 클래스를 먼저 작성한 다음 MemberRepository 등을 작성할 수도 있다.
 - 무엇을 구현하기 전 틀을 먼저 만들어두고(테스트 케이스), 해당 틀을 기반으로 개발하는 방법
 - 테스트를 먼저 만들고 구현 클래스를 만들어서 검증
 
 # 3-4. [Step4]회원 서비스 개발(실제 비즈니스 로직에 있는 회원 서비스)
 
-**네이밍 규칙**
+**<네이밍 규칙>**
 
 - Repository는 save, findById, findByName, findAll 등 단순히 저장소에 데이터를 넣었다 뺐다 하는 듯한 느낌이 듦
 - Service는 join, findMembers 등 조금 더 비즈니스에 가까운 느낌. 실제로 비즈니스 로직을 service에 작성하기도 하고.
@@ -211,7 +211,7 @@ public void afterEach(){
 
 # 3-5. [Step5]회원 서비스 테스트(jUnit)
 
-**테스트케이스 작성**
+**<테스트케이스 작성>**
 
 - 테스트클래스 자동생성 단축키 : 테스트 하고싶은 클래스명/인터페이스명에 커서를 두고 ctrl + shift + t(windows)
 - 테스트는 한글로 작성해도 괜찮음. 어차피 빌드될때 테스트케이스 코드는 포함되지 않기때문에, 테스트시 직관성을 위해서 한글로 작성해도 OK
@@ -230,13 +230,13 @@ void 회원가입() {
 // 둘 다 가능
 ```
 
-**테스트케이스 작성시, given - when - then 문법사용 권장**
+**<테스트케이스 작성시, given - when - then 문법사용 권장>**
 
 - given : 무엇인가 주어졌을때
 - when : 이것을 실행했을때
 - then : 결과는 이렇게 나와야해
 
-**실제코드에서 쓰이는 객체와, 테스트시 사용하는 객체는 동일한 걸로 맞춰주기 : DI**
+**<실제코드에서 쓰이는 객체와, 테스트시 사용하는 객체는 동일한 걸로 맞춰주기 : DI>**
 
 ```
 // 기존코드
@@ -286,7 +286,7 @@ class MemberServiceTest{
 
 # 4-1. 컴포넌트 스캔과 자동 의존관계 설정
 
-**스프링 빈을 등록하고 의존관계 설정하기**
+**<스프링 빈을 등록하고 의존관계 설정하기>**
 : 회원컨트롤러에 의존관계 추가
 
 - Service, Repository를 만들었으니 이제 화면을 구현할 차례.
@@ -342,7 +342,7 @@ public class MemberService {
 
 <img src="./image/sec4_1.png"> 
 
-**컴포넌트 스캔**
+**<컴포넌트 스캔>**
 - @Controller, @Service, @Repository 모두 @Componant어노테이션에 속함!
 - 스프링이 실행될때, Component객체는 전부 SpringContainer에 등록됨.
 - 그리고 @Autowired는 연관관계, SpringContainer에 등록된 객체끼리의 연관관계를 설정해줌.
@@ -354,7 +354,7 @@ public class MemberService {
 
 > : @Controller, @Service, @Repository
 
-**참고**
+**<참고>**
 - main 클래스가 속해있는 패키지의 하위에서만 자동 컴포넌트스캔이 이뤄지며, main클래스와 동일한 위치거나 그 외의 위치는 별도의 설정을 통해 컴포넌트스캔을 실행할 수 있다.
 - 스프링은 스프링 컨테이너에 스프링 빈을 등록할때, 기본으로 싱글톤으로 등록한다.(유일하게 하나만 등록해서 공유한다.) 따라서 같은 스프링빈이면 모두 같은 인스턴스이다. 설정으로 싱글톤이 아니게 설정할 수 있지만, 특별한 경우를 제외하면 대부분 싱글톤을 사용한다. → 메모리 절약 가능
 
@@ -395,14 +395,14 @@ public class SpringConfig {
 - 컴포넌트 스캔을 이용한 자동의존관계 설정시에는 @Controller, @Service, @Repository 어노테이션으로 컴포넌트들을 SpringBean으로 등록하고, @Autowired를 통해 의존관계를 자동으로 설정해주었다면,
 - 이 방식은 Service와 Repository를 SpringConfig라는 @Configuration 클래스에 @Bean을 이용해 직접 SpringContainer에다 등록하고, new MemberService(memberRepository()) 처럼 직접 의존관계를 설정해준다.
 
-**컴포넌트스캔과 자동의존관계 vs 자바코드로 직접**
+**<컴포넌트스캔과 자동의존관계 vs 자바코드로 직접>**
 - 실무에서는 주로 정형화된 컨트롤러, 서비스, 리포지토리 같은 코드는 컴포넌트 스캔을 이용한다.
 - <U>정형화되지 않거나, 상황에 따라 구현 클래스를 변경해야 하면</U> 자바 코드로 직접 설정을 통해 스프링 빈으로 등록한다.    
 	→ (ex)만약 인터페이스 구현체를 변경해야한다면, 컴포넌트스캔시 해당 클래스들을 방문하여 관련 어노테이션을 다 삭제해줘야하는 반면, config파일로 관리할때에는 config파일 하나면 수정하면 되므로, 수정이 훨씬 용이함.
 
 > 우리는 향후 메모리 리포지토리를 다른 리포지토리로 변경할 예정이므로, 컴포넌트 스캔 방식 대신에 자바 코드로 스프링 빈을 설정하겠다.
 
-**참고**
+**<참고>**
 - DI에는 필드주입, setter주입, 생성자 주입 이렇게 3가지 방법이 있다. 객체간 의존관계는 런타임시에 동적으로 변하는 경우가 없으므로 생성자 주입을 권장한다.
 
 	```
@@ -461,7 +461,7 @@ public class SpringConfig {
 
 # 5-1. 회원 웹 기능 - 홈 화면 추가
 
-**웹페이지 조회순서**
+**<웹페이지 조회순서>**
 
 <img src="./image/sec2_static.png">
 
@@ -492,7 +492,7 @@ public class SpringConfig {
 
 # 6-2. 순수 JDBC
 
-**환경설정**
+**<환경설정>**
 - build.gradle 파일에 jdbc, h2 데이터베이스 관련 라이브러리 추가
 > implementation 'org.springframework.boot:spring-boot-starter-jdbc'   
 runtimeOnly 'com.h2database:h2'
@@ -502,7 +502,7 @@ runtimeOnly 'com.h2database:h2'
 spring.datasource.driver-class-name=org.h2.Driver   
 spring.datasource.username=sa
 
-**코드작성**
+**<코드작성>**
 
 <details>
 <summary>ㅤ[JdbcMemberRepository 코드]</summary>
@@ -648,14 +648,14 @@ public class JdbcMemberRepository implements MemberRepository {
 
 ```
 
-**참고**
+**<참고>**
 
 1. Connection맺었으면 꼭 릴리즈해서 자원을 반환해줘야 함. → close()메소드
 2. 상수로 connection을 설정하지 말고 DataSourceUtils.getConnection()을 통해 커넥션을 받아오는게 더 좋음. 이렇게해야 트랜잭션 여러개 실행시 데이터베이스 커넥션을 동일하게 유지할 수 있음. → getConnection()메소드
 
 </details>
 
-**Repository 구현체 변경**
+**<Repository 구현체 변경>**
 - 이제 기존에 메모리 저장방식에서 h2데이터베이스 저장방식으로 Repository구현체를 변경해주어야 한다. (MemoryMemberRepository → JdbcMemberRepository 변경)
 - 이렇게 구현체를 변경하기 위해 의존관계를 SpringConfig파일에서 자바코드로 직접 구현해둔 상태!
 - 그렇다는건 결국 SpringConfig파일만 수정하면 됨
@@ -692,7 +692,7 @@ public class SpringConfig {
 
 # 6-3. 스프링 통합 테스트
 
-**통합 테스트코드 작성**
+**<통합 테스트코드 작성>**
 - 이전 테스트코드는 스프링과 전혀 관계없는 순수한 자바 코드를 테스트한 것. 그게 가능했던 이유는 데이터를 메모리에 저장하기때문에 Connection객체를 만들필요가 없었기 때문.
 - 하지만 지금은 상황이 다름. 실제 DB에 연결하여 데이터를 정상적으로 주고받는지를 테스트해야하므로, 스프링 자체를 껐다 켰다 하면서 테스트할 수 밖에 없음.
 - 테스트 코드는 기존 MemberServiceTest클래스를 복붙해서 몇가지만 수정하여 작성.
@@ -776,12 +776,12 @@ public class SpringConfig {
 
 > [참고] 현업에선 보통 테스트 전용 DB를 따로 구축함
 
-**<U>단위테스트</U> vs 통합테스트**
+**<<U>단위테스트</U> vs 통합테스트>**
 - 순수하게 자바코드로 최소한의 기능을 테스트해보는 것을 단위테스트, 스프링을 실행하고 DB까지 연결해서 서비스 전체를 통합적으로 테스트해보는 것을 통합테스트라고 한다.
 - 단위테스트를 잘하는 것이 더 중요. 스프링 컨테이너없이 개별 단위들을 테스트할 수 있는 코드를 짜는 것이 중요하다. 물론 통합테스트가 필요한 경우도 있지만, 되도록 스프링 컨테이너를 동원한 테스트코드 작성은 지양하는 것이 좋음. 
 # 6-4. 스프링 JdbcTemplate
 
-**JdbcTemplate**
+**<JdbcTemplate>**
 - 개발자가 JDBC기술을 쉽게 사용할 수 있도록 도와주는 서비스
 - Spring DB접근기술 변화 : 순수JDBC → JdbcTemplate or MyBatis → JPA
 - 사용법   
@@ -895,7 +895,7 @@ public class JdbcTemplateMemberRepository implements MemberRepository{
 ```
 </details>
 
-**정리**
+**<정리>**
 > (1) jdbcTemplate.query( [1] , [2] , [3])
 - [1] : 실행할 쿼리문
 - [2] : RowMapper()
