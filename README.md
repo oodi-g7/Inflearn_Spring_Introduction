@@ -986,4 +986,5 @@ public class JdbcTemplateMemberRepository implements MemberRepository{
 → Object Relational Mapping 객체와 관계형DB의 테이블을 Mapping시키는 기술. (Mapping : 어노테이션을 이용하여 매핑.)
 
 # 6-6. 스프링 데이터 JPA
+
 </details>
