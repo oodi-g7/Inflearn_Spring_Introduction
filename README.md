@@ -1074,6 +1074,7 @@ public class JdbcTemplateMemberRepository implements MemberRepository{
 - 모든 메서드에 위와같은 로직을 추가해주어야 함.
 
 **<문제>**
+<img src="./image/sec7_1.png">
 - 호출 시간을 측정하는 기능은 핵심 관심 사항이 아님.
 - 시간을 측정하는 로직은 공통 관심 사항에 해당.
 - 시간을 측정하는 로직(공통 관심 사항)과 비즈니스 로직(핵심 관심 사항)이 섞여 유지보수가 어려움.
@@ -1081,4 +1082,61 @@ public class JdbcTemplateMemberRepository implements MemberRepository{
 - 시간을 측정하는 로직을 변경할 때 모든 로직을 찾아가면서 변경을 수행해야 함.
 
 # 7-2. AOP 적용
+- AOP : Aspect Oriented Programming, 관점지향 프로그래밍
+- 공통관심사항(cross-cutting concern) vs 핵심관심사항(core concern) 분리
+<img src="./image/sec7_2.png">
+
+**<코드작성>**
+```
+package hello.hellospring.aop;
+
+import org.aspectj.lang.ProceedingJoinPoint;
+import org.aspectj.lang.annotation.Aspect;
+
+@Aspect
+public class TimeTraceAop {
+
+	@Around("execution(* hello.hellospring..*(..))") // 해당 aop를 적용할 부분 지정
+    public Object execute(ProceedingJoinPoint joinPoint) throws Throwable{
+        long start = System.currentTimeMillis();
+        System.out.println("START: " + joinPoint.toString());
+        try{
+            return joinPoint.proceed(); // 다음 메소드로 진행
+        }finally {
+            long finish = System.currentTimeMillis();
+            long timeMs = finish - start;
+            System.out.println("END: " + joinPoint.toString() + " " + timeMs + "ms");
+        }
+
+    }
+}
+
+```
+- 만들어진 aop를 스프링 빈으로 등록해야하는데, 해당 클래스에 @Component 어노테이션을 걸어도 되지만, <U>**aop클래스는 정형화된 로직이 아니기 때문에 SpringConfig와 같은 설정파일에서 따로 관리해주는 것이 인지하기에 쉬움.**</U>
+- 아래 코드 확인
+```
+package hello.hellospring;
+
+import hello.hellospring.aop.TimeTraceAop;
+import hello.hellospring.repository.*;
+import hello.hellospring.service.MemberService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+
+@Configuration
+public class SpringConfig {
+
+	...
+
+    @Bean
+    public TimeTraceAop timeTraceAop(){
+        return new TimeTraceAop();
+    }
+}
+
+```
+- [참고] 수업에선 @Component 어노테이션을 거는 방법을 선택.
+
+
 </details>
