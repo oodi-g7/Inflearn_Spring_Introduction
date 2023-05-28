@@ -1049,3 +1049,36 @@ public class JdbcTemplateMemberRepository implements MemberRepository{
 **<정리>**
 1. 스프링 데이터 JPA는 JPA를 편리하게 사용하도록 도와주는 기술일 뿐. 따라서 JPA를 먼저 학습한 후에 스프링 데이터 JPA를 학습해야 함.
 </details>
+
+
+
+
+
+<details>
+<summary>Section 07 : AOP</summary>
+
+# 7-1. AOP가 필요한 상황
+**<상황>**
+- 모든 메서드의 호출 시간을 측정하고 싶다면?
+	```
+	long start = System.currentTimeMillis();
+
+	try {
+		// 비즈니스 로직
+	} finally {
+		long finish = System.currentTimeMillis();
+		long timeMs = finish - start;
+		System.out.println(timeMs + "ms");
+	}
+	```
+- 모든 메서드에 위와같은 로직을 추가해주어야 함.
+
+**<문제>**
+- 호출 시간을 측정하는 기능은 핵심 관심 사항이 아님.
+- 시간을 측정하는 로직은 공통 관심 사항에 해당.
+- 시간을 측정하는 로직(공통 관심 사항)과 비즈니스 로직(핵심 관심 사항)이 섞여 유지보수가 어려움.
+- 시간을 측정하는 로직을 별도의 공통 로직으로 만들기도 어려운 상황.
+- 시간을 측정하는 로직을 변경할 때 모든 로직을 찾아가면서 변경을 수행해야 함.
+
+# 7-2. AOP 적용
+</details>
