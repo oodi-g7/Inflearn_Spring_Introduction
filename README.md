@@ -958,4 +958,32 @@ public class JdbcTemplateMemberRepository implements MemberRepository{
 > (5) jdbcTemplate은 JDBC API에서 본 반복코드를 대부분 제거해준다. 단, SQL은 직접 작성해야한다.
 
 # 6-5. JPA
+
+**<환경설정>**
+1. build.gradle 추가
+> implementation 'org.springframework.boot:spring-boot-starter-data-jpa'   
+: JDBC, JPA 모두 포함하고 있음.
+2. application.properties 추가
+> spring.jpa.show-sql=true   
+: JPA가 날리는 SQL문을 확인할 수 있음. [true | false]
+
+> spring.jpa.hibernate.ddl-auto=none   
+: JPA를 사용하면 JPA가 객체를 보고 테이블까지 자동으로 만들어버림. 하지만 우린 테이블을 이미 만들어두었고 그걸 쭉 사용할 것이므로 none처리해두기. [none | create]
+
+**<코드설명>**
+```
+- @Entity : JPA가 관리하는 엔티티로 등록하기
+- @Id : PK설정
+- EntityManager : JPA는 EntityManager로 모든 것이 동작함. 앞서 build.gradle에서 data-jpa 라이브러리를 다운받았으므로, 스프링 부트는 application.properties 정보와 DB커넥션 정보들을 모두 모아 EntityManager를 생성해줌. 우리는 그걸 Injection받아서 사용하면 됨.
+- JPQL : PK기반이 아닌 쿼리들은 직접 작성해줘야하는데, 이것을 JPQL이라고 부름.
+- @Transactional : JPA를 사용하기 위해선 서비스계층에 해당 어노테이션이 필수적으로 필요. 데이터를 저장/변경하기 위해선 트랜잭션이 꼭 필요함.
+```
+
+**참고**
+1. JPA는 인터페이스이고 Hibernate는 구현체이다. Hibernate외에도 다양한 구현체가 있음.   
+→ JPA는 JAVA진영의 표준 인터페이스이고 그 구현을 여러 벤더사가 수행하고 있다고 생각하면 됨.
+2. JPA는 ORM기술   
+→ Object Relational Mapping 객체와 관계형DB의 테이블을 Mapping시키는 기술. (Mapping : 어노테이션을 이용하여 매핑.)
+
+# 6-6. 스프링 데이터 JPA
 </details>

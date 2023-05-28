@@ -45,7 +45,7 @@ public class JdbcTemplateMemberRepository implements MemberRepository{
     public Optional<Member> findById(Long id) {
         // jdbcTemplate.query()를 통해 입력한 쿼리문을 실행해서 결과를 가져온 후,
         // 이것을 memberRowMapper()메소드를 호출해서 RowMapper객체를 이용해 Member객체로 변환시켜서 Optional로 return
-        List<Member> result = jdbcTemplate.query("select * from member where id = ?", memberRowMapper(), id);
+        List<Member> result = jdbcTemplate.query("select * from member where id = ?", memberRowMapper(), id); // JPQL
         return result.stream().findAny();
     }
 
