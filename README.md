@@ -968,7 +968,8 @@ public class JdbcTemplateMemberRepository implements MemberRepository{
 : JPA가 날리는 SQL문을 확인할 수 있음. [true | false]
 
 > spring.jpa.hibernate.ddl-auto=none   
-: JPA를 사용하면 JPA가 객체를 보고 테이블까지 자동으로 만들어버림. 하지만 우린 테이블을 이미 만들어두었고 그걸 쭉 사용할 것이므로 none처리해두기. [none | create]
+: JPA를 사용하면 JPA가 객체를 보고 테이블까지 자동으로 만들어버림. 하지만 우린 테이블을 이미 만들어두었고 그걸 쭉 사용할 것이므로 none처리해두기. [none | create]   
+: create를 사용하면 엔티티 정보를 바탕으로 테이블도 직접 생성해줌.
 
 **<코드설명>**
 ```
@@ -976,15 +977,75 @@ public class JdbcTemplateMemberRepository implements MemberRepository{
 - @Id : PK설정
 - EntityManager : JPA는 EntityManager로 모든 것이 동작함. 앞서 build.gradle에서 data-jpa 라이브러리를 다운받았으므로, 스프링 부트는 application.properties 정보와 DB커넥션 정보들을 모두 모아 EntityManager를 생성해줌. 우리는 그걸 Injection받아서 사용하면 됨.
 - JPQL : PK기반이 아닌 쿼리들은 직접 작성해줘야하는데, 이것을 JPQL이라고 부름.
-- @Transactional : JPA를 사용하기 위해선 서비스계층에 해당 어노테이션이 필수적으로 필요. 데이터를 저장/변경하기 위해선 트랜잭션이 꼭 필요함.
+- @Transactional   
+: JPA를 사용하기 위해선 서비스계층에 해당 어노테이션이 필수적으로 필요. 데이터를 저장/변경하기 위해선 트랜잭션이 꼭 필요함. (JPA를 통한 모든 데이터 변경은 트랜잭션 안에서 실행해야 함)
+: 스프링은 해당 클래스의 메서드를 실행할 때 트랜잭션을 시작하고, 메서드가 정상 종료되면 트랜잭션을 커밋한다. 만약 런타임 예외가 발생하면 롤백한다.
 ```
 
-**참고**
+**<참고>**
 1. JPA는 인터페이스이고 Hibernate는 구현체이다. Hibernate외에도 다양한 구현체가 있음.   
 → JPA는 JAVA진영의 표준 인터페이스이고 그 구현을 여러 벤더사가 수행하고 있다고 생각하면 됨.
 2. JPA는 ORM기술   
 → Object Relational Mapping 객체와 관계형DB의 테이블을 Mapping시키는 기술. (Mapping : 어노테이션을 이용하여 매핑.)
 
+**<정리>**
+1. JPA는 기존의 반복 코드는 물론이고, 기본적인 SQL도 JPA가 직접 만들어서 실행해준다.
+2. JPA를 사용하면 SQL과 데이터 중심의 설계에서 객체 중심의 설계로 패러다임을 전환할 수 있다.
+3. JPA를 사용하면 개발 생산성을 크게 높일 수 있다.
+
 # 6-6. 스프링 데이터 JPA
 
+**<코드>**
+1. SpringDataJpaMemberRepository
+	```
+	import hello.hellospring.domain.Member;
+	import org.springframework.data.jpa.repository.JpaRepository;
+	import java.util.Optional;
+
+	public interface SpringDataJpaMemberRepository extends JpaRepository<Member, Long>, MemberRepository { //인터페이스는 다중 상속이 가능
+
+		@Override
+		Optional<Member> findByName(String name);
+	}
+	```
+	- 인터페이스는 다중 상속이 가능하므로 JpaRepository와 MemberRepository를 상속받아준다.
+	- JpaRespository<엔티티클래스명, 해당클래스의@Id데이터타입>
+	- JpaRepository를 상속받고 나면 스프링 데이터 JPA가 SpringDataJpaMemberRepository를 스프링 Bean으로 자동 등록해준다.
+
+2. SpringConfig
+	```
+	package hello.hellospring;
+
+	import hello.hellospring.repository.*;
+	import hello.hellospring.service.MemberService;
+	import org.springframework.beans.factory.annotation.Autowired;
+	import org.springframework.context.annotation.Configuration;
+
+	@Configuration
+	public class SpringConfig {
+		private final MemberRepository memberRepository;
+
+		@Autowired
+		public SpringConfig(MemberRepository memberRepository){
+			this.memberRepository = memberRepository;
+		}
+
+		@Bean
+		public MemberService memberService(){
+			return new MemberService(memberRepository);
+		}
+	}
+
+	```
+	- 스프링 데이터 JPA 회원 Repository를 사용하도록 스프링 설정 변경.
+
+**<스프링 데이터 JPA 제공 클래스>**
+<img src="./image/sec6_3.png">
+- ( + 추가 )
+	- 인터페이스를 통한 기본적인 CRUD 제공
+	- findByName(), findByEmail()처럼 메서드 이름 만으로 조회 기능 제공
+	- 페이징 기능 자동 제공
+
+**<정리>**
+1. 스프링 데이터 JPA는 JPA를 편리하게 사용하도록 도와주는 기술일 뿐. 따라서 JPA를 먼저 학습한 후에 스프링 데이터 JPA를 학습해야 함.
 </details>
