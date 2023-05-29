@@ -1138,5 +1138,32 @@ public class SpringConfig {
 ```
 - [참고] 수업에선 @Component 어노테이션을 거는 방법을 선택.
 
+**<실행>**
+<img src="./image/sec7_3.png">
+- TimeTraceAop 클래스에서 @Around("execution(* hello.hellospring..*(..))") 와 같이 hellospirng하위 모든 클래스에 해당 AOP를 적용해두었기때문에 콘솔에 찍힌 로그에서도 모든 클래스에 대한 START 및 END가 찍힌것을 확인할 수 있다.
+- 만약 hello.hellospring하위가 아니라 service패키지 하위에만 AOP를 적용하고 싶다면 @Around("execution(* hello.hellospring.<U>service</U>..*(..))") 로 수정하면 되고 수정 후 찍힌 로그는 아래와 같다.
 
+<img src="./image/sec7_4.png">
+
+**<문제해결>**
+- 회원가입, 회원조회 등 핵심 관심사항과 시간을 측정하는 공통 관심 사항을 분리한다.
+- 시간을 측정하는 로직을 별도의 공통 로직으로 만들었다.
+- 핵심 관심 사항을 깔끔하게 유지할 수 있다.
+- 변경이 필요하면 TimeTraceAop 로직만 변경하면 된다.
+- 원하는 적용 대상을 선택할 수 있다. → @Around 어노테이션 설정 변경
+
+**<정리>**
+- AOP 적용 전 의존관계
+	- memberController에서 memberService에 있는 join()과 같은 메소드를 끌어다 사용
+<img src="./image/sec7_5.png">
+
+- AOP 적용 후 의존관계
+	- AOP가 적용된 클래스파일은 프록시기술에 의해 가상의 클래스 복제본(?)이 생기는데, Controller에서 Service호출시 가상Service가 먼저 실행된 후 실제 Service가 실행됨.
+<img src="./image/sec7_6.png">
+
+- AOP 적용 전 전체 그림
+<img src="./image/sec7_7.png">
+
+- AOP 적용 후 전체 그림
+<img src="./image/sec7_8.png">
 </details>
